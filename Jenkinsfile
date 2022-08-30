@@ -1,28 +1,28 @@
+
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        echo 'Building..'
-      }
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
     }
-    stage('Test') {
-      steps {
-        parallel(
-          "Test": {
-            echo 'Testing..'
-          },
-          "Integration Test": {
-            echo 'Integration Test...'
-            
-          }
-        )
-      }
+    post {
+    success {
+        sh 'echo "Pipeline Works"'
     }
-    stage('Deploy') {
-      steps {
-        echo 'Deploying....'
-      }
+    failure {
+        script {
+            sh '''
+            |echo "This job failed"
+            |echo "And I am not sure why"
+            '''.stripMargin().stripIndent()
+        }
     }
-  }
+}
+    
+
+    
 }
